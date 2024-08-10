@@ -16,15 +16,6 @@ def start(config: Config):
     log_file = config.da_server_log_file
     print(f"Starting da server. Logging to {log_file}")
 
-    auth_token = os.getenv("CELESTIA_NODE_AUTH_TOKEN")
-    if not auth_token:
-        auth_token = lib.run("Generating celestia auth token", [
-            "celestia",
-            "light",
-            "auth",
-            "write",
-            "--p2p.network", "mocha",
-        ]).strip()
 
     command = [
         "da-server",
@@ -32,9 +23,6 @@ def start(config: Config):
         "--port=3100",
         "--log.level=debug",
         "--generic-commitment=1",
-        "--celestia.server=http://127.0.0.1:26658",
-        f"--celestia.auth-token='{auth_token}'",
-        "--celestia.namespace=00000000000000000000000000000000000000000008e5f679bf7116cb",
     ]
 
     config.log_l2_command("\n".join(command))

@@ -19,7 +19,6 @@ import l2_deploy
 import l2_engine
 import l2_node
 import da_server
-import celestia_light_node
 import l2_proposer
 import libroll as lib
 import logrotate
@@ -133,10 +132,6 @@ p.command(
 p.command(
     "l2-sequencer",
     help="starts a local L2 node (op-node) in sequencer mode")
-
-p.command(
-    "celestia-light-node",
-    help="starts a celestia light node")
 
 p.command(
     "da-server",
@@ -335,14 +330,11 @@ def main():
 
             deps.check_or_install_geth()
             deps.check_or_install_foundry()
-            deps.check_or_install_celestia_node()
-            deps.check_or_install_da_server()
 
             if config.run_devnet_l1:
                 l1.deploy_devnet_l1(config)
-            celestia_light_node.start(config)
             time.sleep(15)
-            da_server.start(config)
+#             da_server.start(config)
             l2.deploy_and_start(config)
             start_addons(config)
             wait(config)
@@ -360,32 +352,13 @@ def main():
             if state.args.clean_first:
                 l2.clean(config)
 
-            if state.args.preset == "prod":
-                if lib.ask_yes_no("this branch deploys alt-da with celestia da-server. "+
-                        "While it has received initial review from core contributors, "+
-                        "it is still undergoing testing and may have bugs or other issues. "+
-                        "Please check https://docs.optimism.io/builders/chain-operators/features/alt-da-mode for more details"):
-                    deps.check_or_install_foundry()
-                    deps.check_or_install_celestia_node()
-                    deps.check_or_install_da_server()
+            deps.check_or_install_foundry()
 
-                    celestia_light_node.start(config)
-                    time.sleep(15)
-                    da_server.start(config)
-                    l2.deploy_and_start(config)
-                    start_addons(config)
-                    wait(config)
-            else:
-                deps.check_or_install_foundry()
-                deps.check_or_install_celestia_node()
-                deps.check_or_install_da_server()
-
-                celestia_light_node.start(config)
-                time.sleep(15)
-                da_server.start(config)
-                l2.deploy_and_start(config)
-                start_addons(config)
-                wait(config)
+            time.sleep(15)
+#             da_server.start(config)
+            l2.deploy_and_start(config)
+            start_addons(config)
+            wait(config)
 
         elif state.args.command == "aa":
             if state.args.clean_first:

@@ -415,7 +415,7 @@ def get_foundry_version():
 
 ####################################################################################################
 
-FOUNDRY_VERSION = "2024-06-10"
+FOUNDRY_VERSION = "2024-06-07"
 """
 Required version of forge. We're locking down foundry to a specific version, as new versions can
 introduce serious regressions, and have done so in the past.
